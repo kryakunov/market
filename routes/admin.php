@@ -11,6 +11,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', IsAdminMiddleware::c
     Route::resource('products', ProductController::class);
     Route::resource('params', ParamController::class);
     Route::resource('categories', CategoryController::class);
-
-    Route::get('product-parents', [ProductParentController::class, 'index'])->name('product_parents.index');
+    Route::resource('product-parents', CategoryController::class)->parameters(['product-parents' => 'productParents']);
 });

@@ -5,17 +5,21 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\StoreRequest;
 use App\Http\Requests\Admin\Product\UpdateRequest;
+use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $products = Product::all();
+        $products = ProductResource::collection($products)->resolve();
+
+        return Inertia('Product/Admin/Index', compact('products'));
     }
 
     /**
@@ -23,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia('Product/Admin/Create');
     }
 
     /**
@@ -31,7 +35,9 @@ class ProductController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        $product = ProductService::store($data);
+        return ProductResource::make($product)->resolve();
     }
 
     /**
@@ -39,7 +45,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $product = ProductResource::make($product)->resolve();
+
+        return Inertia('Product/Admin/Show', compact('product'));
     }
 
     /**
@@ -47,7 +55,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $product = ProductResource::make($product)->resolve();
+
+        return Inertia('Product/Admin/Edit', compact('product'));
     }
 
     /**
@@ -55,7 +65,9 @@ class ProductController extends Controller
      */
     public function update(UpdateRequest $request, Product $product)
     {
-        //
+        $data = $request->validated();
+        $product = ProductService::update($product, $data);
+        return ProductResource::make($product)->resolve();
     }
 
     /**
@@ -63,6 +75,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return response()->json([
+            'message' => 'success'
+        ], Response::HTTP_OK);
     }
 }
