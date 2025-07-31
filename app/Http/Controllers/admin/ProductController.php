@@ -19,7 +19,7 @@ class ProductController extends Controller
         $products = Product::all();
         $products = ProductResource::collection($products)->resolve();
 
-        return Inertia('Product/Admin/Index', compact('products'));
+        return Inertia('Admin/Product/Index', compact('products'));
     }
 
     /**

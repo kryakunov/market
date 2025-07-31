@@ -19,7 +19,7 @@ class ParamController extends Controller
         $params = Param::all();
         $params = ParamResource::collection($params)->resolve();
 
-        return Inertia('Param/Admin/Index', compact('Params'));
+        return Inertia('Admin/Param/Index', compact('params'));
     }
 
     /**

@@ -21,7 +21,7 @@ class ProductParentController extends Controller
         $productParents = ProductParent::all();
         $productParents = ProductParentResource::collection($productParents)->resolve();
 
-        return Inertia('ProductParent/Admin/Index', compact('ProductParents'));
+        return Inertia('Admin/ProductParent/Index', compact('productParents'));
     }
 
     /**
